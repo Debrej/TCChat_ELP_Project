@@ -30,7 +30,7 @@ func parseJSON(str string) []Message {
 	return mA.Messages
 }
 
-func ParseServer(str string) []string {
+func ParseServer(str string) (string, []string, map[string]string) {
 	absPath, _ := filepath.Abs("./main/ServerMessages.json")
 	messagesArrayBytes, err := ioutil.ReadFile(absPath)
 	check(err)
@@ -42,14 +42,18 @@ func ParseServer(str string) []string {
 	msgName := aStr[0]
 	found := false
 	i := 0
-	var retParam []string
+	var retParamNames []string
+	retParamValues := make(map[string]string)
 	for !found {
 		if messages[i].Name == msgName {
 			found = true
-			retParam = messages[i].Parameters
+			retParamNames = messages[i].Parameters
 		} else {
 			i++
 		}
 	}
-	return retParam
+	for i := 0; i < len(retParamNames); i++ {
+		retParamValues[retParamNames[i]] = aStr[i+1]
+	}
+	return msgName, retParamNames, retParamValues
 }

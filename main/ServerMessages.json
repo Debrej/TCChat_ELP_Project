@@ -9,12 +9,15 @@
     {
       "name" : "TCCHAT_MESSAGE" ,
       "parameters" : [
-        "msg_payload"
+        "msg_payload",
+        "uid"
       ]
     },
     {
       "name" : "TCCHAT_DISCONNECT" ,
-      "parameters" : []
+      "parameters": [
+        "uid"
+      ]
     }
   ]
 }
