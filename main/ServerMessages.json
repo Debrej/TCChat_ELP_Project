@@ -1,0 +1,20 @@
+{
+  "messages" : [
+    {
+      "name" : "TCCHAT_REGISTER" ,
+      "parameters" : [
+        "nickname"
+      ]
+    },
+    {
+      "name" : "TCCHAT_MESSAGE" ,
+      "parameters" : [
+        "msg_payload"
+      ]
+    },
+    {
+      "name" : "TCCHAT_DISCONNECT" ,
+      "parameters" : []
+    }
+  ]
+}
