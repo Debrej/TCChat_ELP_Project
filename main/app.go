@@ -17,16 +17,17 @@ func main() {
 		fmt.Print("Enter text: ")
 		testString, _ := reader.ReadString('\n')
 
-		/* HERE WE USE ParseServer TO GET THE CORRESPONDING PARAMETERS AND THEIR RESPECTIVE VALUES*/
+		///* HERE WE USE ParseServer TO GET THE CORRESPONDING PARAMETERS AND THEIR RESPECTIVE VALUES*/
 		msgName, msgParamsName, msgParams := ParseServer(testString)
+		//_, msgParamsName, msgParams := ParseClient(testString)
 
 		if msgName != "TCCHAT_MESSAGE" {
 			users = serverUserHandler(msgName, msgParams, users)
 		}
 
 		for i := 0; i < len(users); i++ {
-			if users[i] != "\n" {
-				fmt.Println(strconv.Itoa(i) + " : " + users[i])
+			if nickname, ok := users[i]; ok {
+				fmt.Println(strconv.Itoa(i) + " : " + nickname)
 			}
 		}
 

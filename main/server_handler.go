@@ -15,7 +15,7 @@ func serverUserHandler(msgName string, paramValues map[string]string, users map[
 			if _, ok := users[i]; ok {
 				i++
 			} else {
-				keyExists = false
+				break
 			}
 		}
 		users[i] = paramValues["nickname"]

@@ -1,0 +1,37 @@
+{
+  "messages": [
+    {
+      "name": "TCCHAT_WELCOME",
+      "parameters": [
+        "server_name",
+        "uid"
+      ]
+    },
+    {
+      "name": "TCCHAT_USERIN",
+      "parameters": [
+        "nickname"
+      ]
+    },
+    {
+      "name": "TCCHAT_USEROUT",
+      "parameters": [
+        "nickname"
+      ]
+    },
+    {
+      "name": "TCCHAT_PERSONNAL",
+      "parameters": [
+        "msg_payload",
+        "src_nickname"
+      ]
+    },
+    {
+      "name": "TCCHAT_BCAST",
+      "parameters": [
+        "msg_payload",
+        "src_nickname"
+      ]
+    }
+  ]
+}
