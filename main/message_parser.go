@@ -16,12 +16,6 @@ type Message struct {
 	Parameters []string `json:"parameters"`
 }
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 func parseJSON(str string) []Message {
 	decoderJson := json.NewDecoder(strings.NewReader(str))
 	var mA MessageArray

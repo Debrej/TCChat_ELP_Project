@@ -3,12 +3,11 @@ package main
 func main() {
 
 	users := make(map[int]string)
-	users[12] = "thibaut"
 
 	for true {
 		var msg string
 		/* THIS PART READS THE INPUT FROM THE USER */
-		testString := read("Enter text: ")
+		testString := Read("Enter text: ")
 
 		/* HERE WE USE ParseServer TO GET THE CORRESPONDING PARAMETERS AND THEIR RESPECTIVE VALUES*/
 		//msgName, msgParamsName, msgParams := ParseServer(testString)
