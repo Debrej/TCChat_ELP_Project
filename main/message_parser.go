@@ -64,7 +64,7 @@ func ParseClient(str string) (string, []string, map[string]string) {
 	check(err)
 	messagesArray := string(messagesArrayBytes[:])
 	messages := parseJSON(messagesArray)
-	lenStr := len(str) - 1
+	lenStr := len(str)
 	tmpStr := str[:lenStr]
 	aStr := strings.Split(tmpStr, "\t")
 	msgName := aStr[0]

@@ -20,14 +20,15 @@
       ]
     },
     {
-      "name": "TCCHAT_PERSONNAL",
+      "name": "TCCHAT_PERSONAL",
       "parameters": [
         "msg_payload",
-        "src_nickname"
+        "src_nickname",
+        "dest_nickname"
       ]
     },
     {
-      "name": "TCCHAT_BCAST",
+      "name": "TCCHAT_MESSAGE",
       "parameters": [
         "msg_payload",
         "src_nickname"

@@ -4,8 +4,23 @@ import (
 	"strconv"
 )
 
-func serverUserHandler(msgName string, paramValues map[string]string, users map[int]string) map[int]string {
+func ServerHandler(msgName string, msgParams map[string]string, users map[int]string) (map[int]string, string) {
+	var msg string
+
+	switch msgName {
+	case "TCCHAT_REGISTER", "TCCHAT_DISCONNECT":
+		users, msg = serverUserHandler(msgName, msgParams, users)
+
+	case "TCCHAT_MESSAGE":
+		users, msg = serverMessageHandler(msgParams, users)
+	}
+
+	return users, msg
+}
+
+func serverUserHandler(msgName string, msgParams map[string]string, users map[int]string) (map[int]string, string) {
 	var uid int
+	var msg string
 
 	switch msgName {
 	case "TCCHAT_REGISTER":
@@ -15,19 +30,48 @@ func serverUserHandler(msgName string, paramValues map[string]string, users map[
 			if _, ok := users[i]; ok {
 				i++
 			} else {
-				break
+				keyExists = false
 			}
 		}
-		users[i] = paramValues["nickname"]
+		users[i] = msgParams["nickname"]
+		msg = "TCCHAT_USERIN\t" + msgParams["nickname"]
 		uid = i
 
 	case "TCCHAT_DISCONNECT":
-		uid, _ = strconv.Atoi(paramValues["uid"])
+		uid, _ = strconv.Atoi(msgParams["uid"])
+		msg = "TCCHAT_USEROUT\t" + users[uid]
 		delete(users, uid)
+
 	}
-	return users
+	return users, msg
 }
 
-func serverMessageHandler(paramValues map[string]string, users map[int]string) {
+func serverMessageHandler(msgParams map[string]string, users map[int]string) (map[int]string, string) {
+	isPersonal, msg, dest := checkPersonal(msgParams["msg_payload"])
+	var retString string
+	uid, _ := strconv.Atoi(msgParams["uid"])
+	if isPersonal {
+		retString = "TCCHAT_PERSONAL\t" + msg + "\t" + users[uid] + "\t" + dest
+	} else {
+		retString = "TCCHAT_MESSAGE\t" + msg + "\t" + users[uid]
+	}
+	return users, retString
+}
 
+func checkPersonal(msg string) (bool, string, string) {
+	isPersonal := false
+	msgRet := ""
+	destRet := ""
+	if msg[0] == '@' && msg[1] != ' ' {
+		isPersonal = true
+		i := 0
+		for msg[i] != ' ' {
+			i++
+		}
+		destRet = msg[1 : i+1]
+		msgRet = msg[i+1:]
+	} else {
+		msgRet = msg
+	}
+	return isPersonal, msgRet, destRet
 }
