@@ -13,7 +13,7 @@ func main() {
 		//msgName, msgParamsName, msgParams := ParseServer(testString)
 		msgName, _, msgParams := ParseServer(testString)
 
-		users, msg = ServerHandler(msgName, msgParams, users)
+		users, msg = ServerRecHandler(msgName, msgParams, users)
 
 		msgCName, _, msgCParams := ParseClient(msg)
 		ClientHandler(msgCName, msgCParams)

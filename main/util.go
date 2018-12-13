@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func Read(str string) string {
@@ -18,3 +19,5 @@ func check(e error) {
 		panic(e)
 	}
 }
+
+var replacer = strings.NewReplacer("\t", " ")

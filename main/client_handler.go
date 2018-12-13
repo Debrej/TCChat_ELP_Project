@@ -54,3 +54,20 @@ func showPrivateMsg(msgParams map[string]string) {
 	msg := msgParams["msg_payload"]
 	fmt.Println(srcNickname + "@" + destNickname + " : " + msg)
 }
+
+func checkCommand(msgPayload string, uid string) (string, bool) {
+	msg := ""
+	disconnect := false
+
+	if msgPayload[0] == '/' {
+		if len(msgPayload) >= 11 && msgPayload[1:11] == "disconnect" {
+			msg = "TCCHAT_DISCONNECT\t" + uid + "\n"
+			fmt.Println("Goodbye")
+			disconnect = true
+		}
+	} else {
+		msg = "TCCHAT_MESSAGE\t" + msgPayload + "\t" + uid + "\n"
+	}
+
+	return msg, disconnect
+}

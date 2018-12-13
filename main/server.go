@@ -10,7 +10,7 @@ func main() {
 
 	// CREATION DU SERVEUR
 	ln, err := net.Listen("tcp", ":16000")
-	fmt.Println("Server up")
+	fmt.Println("Server up\n")
 	check(err)
 
 	// CREATION TABLEAU USERS
@@ -18,22 +18,33 @@ func main() {
 	users := make(map[int]string)
 	conns := make(map[int]net.Conn)
 
-	//go func() {
+	go func() {
+		for {
+			conn, errAccept := ln.Accept()
+			check(errAccept)
+
+			msg, errRead := bufio.NewReader(conn).ReadString('\n')
+			check(errRead)
+			msgName, _, msgParams := ParseServer(msg)
+			users, conns, msg = ServerRecHandler(msgName, msgParams, conn, users, conns)
+
+			_, errWrite := conn.Write([]byte(msg))
+			check(errWrite)
+		}
+	}()
+
 	for {
-		conn, errAccept := ln.Accept()
-		check(errAccept)
+		for _, conn := range conns {
+			msg, errRead := bufio.NewReader(conn).ReadString('\n')
+			check(errRead)
+			msgName, _, msgParams := ParseServer(msg)
+			users, conns, msg = ServerRecHandler(msgName, msgParams, conn, users, conns)
 
-		msg, errRead := bufio.NewReader(conn).ReadString('\n')
-		check(errRead)
-		msgName, _, msgParams := ParseServer(msg)
-		fmt.Println("new connection from '" + msgParams["nickname"] + "' @ " + net.Addr(conn.RemoteAddr()).String() + "\n\n")
-		users, conns, msg = ServerHandler(msgName, msgParams, conn, users, conns)
+			fmt.Print("message received : ")
 
-		fmt.Println(users)
-		fmt.Println(conns)
+			fmt.Println(msg)
 
-		_, errWrite := conn.Write([]byte(msg))
-		check(errWrite)
+			ServerSendHandler(msgName, msgParams, msg, users, conns)
+		}
 	}
-	//}()
 }

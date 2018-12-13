@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func ServerHandler(msgName string, msgParams map[string]string, conn net.Conn, users map[int]string, conns map[int]net.Conn) (map[int]string, map[int]net.Conn, string) {
+func ServerRecHandler(msgName string, msgParams map[string]string, conn net.Conn, users map[int]string, conns map[int]net.Conn) (map[int]string, map[int]net.Conn, string) {
 	var msg string
 
 	switch msgName {
@@ -37,8 +37,8 @@ func serverUserHandler(msgName string, msgParams map[string]string, conn net.Con
 		}
 		users[i] = msgParams["nickname"]
 		conns[i] = conn
+		fmt.Println("new connection from '" + msgParams["nickname"] + "' @ " + net.Addr(conn.RemoteAddr()).String() + "\n")
 		msg = "TCCHAT_WELCOME\tELP_TCCHAT\t" + strconv.Itoa(i) + "\n"
-		fmt.Println(msg)
 		uid = i
 
 	case "TCCHAT_DISCONNECT":
@@ -79,4 +79,22 @@ func checkPersonal(msg string) (bool, string, string) {
 		msgRet = msg
 	}
 	return isPersonal, msgRet, destRet
+}
+
+func ServerSendHandler(msgName string, msgParams map[string]string, msg string, users map[int]string, conns map[int]net.Conn) {
+	switch msgName {
+	case "TCCHAT_MESSAGE":
+		SendBroadcast(msg, msgParams["uid"], conns)
+	}
+}
+
+func SendBroadcast(msg string, uidS string, conns map[int]net.Conn) {
+	uid, _ := strconv.Atoi(uidS)
+	for uidCurrent, conn := range conns {
+		if uidCurrent != uid {
+			fmt.Println("Sending to user n°" + strconv.Itoa(uid))
+			_, errWrite := conn.Write([]byte(msg))
+			check(errWrite)
+		}
+	}
 }
