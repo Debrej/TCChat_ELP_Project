@@ -25,6 +25,7 @@ func main() {
 
 			msg, errRead := bufio.NewReader(conn).ReadString('\n')
 			check(errRead)
+
 			msgName, _, msgParams := ParseServer(msg)
 			users, conns, msg = ServerRecHandler(msgName, msgParams, conn, users, conns)
 

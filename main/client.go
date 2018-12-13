@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"net"
 	"os"
+	"strconv"
 )
 
 func main() {
@@ -16,7 +17,7 @@ func main() {
 	nickname = nickname[:len(nickname)-1]
 	msgNickname := "TCCHAT_REGISTER\t" + nickname + "\n"
 
-	conn, errDial := net.Dial("tcp", "192.168.0.161:16000")
+	conn, errDial := net.Dial("tcp", "192.168.43.10:16000")
 	check(errDial)
 	_, errWrite := conn.Write([]byte(msgNickname))
 	check(errWrite)
@@ -26,7 +27,8 @@ func main() {
 		check(errRead)
 
 		msgCName, _, msgCParams := ParseClient(msg)
-		ClientHandler(msgCName, msgCParams)
+		uidI, _ := strconv.Atoi(uid)
+		uid = strconv.Itoa(ClientHandler(msgCName, msgCParams, uidI))
 
 		// CLIENT IS READY
 		ready <- 0
@@ -41,7 +43,8 @@ func main() {
 			check(errRead)
 
 			msgCName, _, msgCParams := ParseClient(msg)
-			ClientHandler(msgCName, msgCParams)
+			uidI, _ := strconv.Atoi(uid)
+			ClientHandler(msgCName, msgCParams, uidI)
 		}
 	}()
 

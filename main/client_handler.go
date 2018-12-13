@@ -5,10 +5,10 @@ import (
 	"strconv"
 )
 
-func ClientHandler(msgName string, msgParams map[string]string) {
+func ClientHandler(msgName string, msgParams map[string]string, uid int) int {
 	switch msgName {
 	case "TCCHAT_WELCOME":
-		showWelcome(msgParams)
+		uid = showWelcome(msgParams)
 
 	case "TCCHAT_USERIN":
 		showUserIn(msgParams)
@@ -22,7 +22,7 @@ func ClientHandler(msgName string, msgParams map[string]string) {
 	case "TCCHAT_PERSONAL":
 		showPrivateMsg(msgParams)
 	}
-
+	return uid
 }
 
 func showWelcome(msgParams map[string]string) int {

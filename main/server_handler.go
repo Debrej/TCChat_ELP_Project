@@ -37,7 +37,8 @@ func serverUserHandler(msgName string, msgParams map[string]string, conn net.Con
 		}
 		users[i] = msgParams["nickname"]
 		conns[i] = conn
-		fmt.Println("new connection from '" + msgParams["nickname"] + "' @ " + net.Addr(conn.RemoteAddr()).String() + "\n")
+		str := "new connection from '" + msgParams["nickname"] + "' @ " + net.Addr(conn.RemoteAddr()).String() + "\n"
+		fmt.Println(str)
 		msg = "TCCHAT_WELCOME\tELP_TCCHAT\t" + strconv.Itoa(i) + "\n"
 		uid = i
 
