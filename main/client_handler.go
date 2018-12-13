@@ -34,25 +34,25 @@ func showWelcome(msgParams map[string]string) int {
 
 func showUserIn(msgParams map[string]string) {
 	nickname := msgParams["nickname"]
-	fmt.Println("A new user arrives, welcome " + nickname)
+	fmt.Println("\nA new user arrives, welcome " + nickname)
 }
 
 func showUserOut(msgParams map[string]string) {
 	nickname := msgParams["nickname"]
-	fmt.Println(nickname + " left us... :'(")
+	fmt.Println("\n" + nickname + " left us... :'(")
 }
 
 func showMsg(msgParams map[string]string) {
 	nickname := msgParams["src_nickname"]
 	msg := msgParams["msg_payload"]
-	fmt.Println(nickname + " : " + msg)
+	fmt.Println("\n" + nickname + " : " + msg)
 }
 
 func showPrivateMsg(msgParams map[string]string) {
 	srcNickname := msgParams["src_nickname"]
 	destNickname := msgParams["dest_nickname"]
 	msg := msgParams["msg_payload"]
-	fmt.Println(srcNickname + "@" + destNickname + " : " + msg)
+	fmt.Println("\n" + srcNickname + "@" + destNickname + " : " + msg)
 }
 
 func checkCommand(msgPayload string, uid string) (string, bool) {
