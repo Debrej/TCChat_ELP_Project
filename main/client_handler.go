@@ -35,25 +35,25 @@ func showWelcome(msgParams map[string]string, f *os.File) int {
 
 func showUserIn(msgParams map[string]string, f *os.File) {
 	nickname := msgParams["nickname"]
-	_, _ = f.Write([]byte("\nA new user arrives, welcome " + nickname))
+	_, _ = f.Write([]byte("A new user arrives, welcome " + nickname + "\r\n"))
 }
 
 func showUserOut(msgParams map[string]string, f *os.File) {
 	nickname := msgParams["nickname"]
-	_, _ = f.Write([]byte("\n" + nickname + " left us... :'("))
+	_, _ = f.Write([]byte(nickname + " left us... :'(\r\n"))
 }
 
 func showMsg(msgParams map[string]string, f *os.File) {
 	nickname := msgParams["src_nickname"]
 	msg := msgParams["msg_payload"]
-	_, _ = f.Write([]byte("\n" + nickname + " : " + msg))
+	_, _ = f.Write([]byte(nickname + " : " + msg + "\r\n"))
 }
 
 func showPrivateMsg(msgParams map[string]string, f *os.File) {
 	srcNickname := msgParams["src_nickname"]
 	destNickname := msgParams["dest_nickname"]
 	msg := msgParams["msg_payload"]
-	_, _ = f.Write([]byte("\n" + srcNickname + "@" + destNickname + " : " + msg))
+	_, _ = f.Write([]byte(srcNickname + "@" + destNickname + " : " + msg + "\r\n"))
 }
 
 func checkCommand(msgPayload string, uid string) (string, bool) {

@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"net"
 	"os"
 	"strconv"
@@ -24,6 +23,7 @@ func main() {
 	check(errWrite)
 
 	f, _ := os.OpenFile("output.txt", os.O_RDWR|os.O_CREATE, 0777)
+	_ = f.Truncate(0)
 
 	go func() {
 		msg, errRead := bufio.NewReader(conn).ReadString('\n')
@@ -47,13 +47,13 @@ func main() {
 			msgCName, _, msgCParams := ParseClient(msg)
 			uidI, _ := strconv.Atoi(uid)
 			ClientHandler(msgCName, msgCParams, uidI, f)
-			fmt.Print(nickname + " : ")
 		}
 	}()
 
 	for {
 		msgPayload := Read(nickname + " : ")
 		if msgPayload != "\n" {
+			_, _ = f.Write([]byte(nickname + " : " + msgPayload + "\r"))
 			msgPayload = msgPayload[:len(msgPayload)-1]
 			msgPayload = replacer.Replace(msgPayload)
 
