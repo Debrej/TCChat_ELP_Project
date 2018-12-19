@@ -31,6 +31,9 @@ func main() {
 
 			_, errWrite := conn.Write([]byte(msg))
 			check(errWrite)
+
+			ServerSendHandler(msgName, msgParams, msg, users, conns)
+
 			go func(conn net.Conn) {
 				for {
 					msg, errRead := bufio.NewReader(conn).ReadString('\n')

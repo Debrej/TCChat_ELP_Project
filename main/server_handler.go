@@ -39,8 +39,8 @@ func serverUserHandler(msgName string, msgParams map[string]string, conn net.Con
 		conns[i] = conn
 		str := "new connection from '" + msgParams["nickname"] + "' @ " + net.Addr(conn.RemoteAddr()).String() + "\n"
 		fmt.Println(str)
-		msg = "TCCHAT_WELCOME\tELP_TCCHAT\t" + strconv.Itoa(i) + "\n"
-
+		uidS := strconv.Itoa(i)
+		msg = "TCCHAT_WELCOME\tELP_TCCHAT\t" + uidS + "\n"
 		uid = i
 
 	case "TCCHAT_DISCONNECT":

@@ -50,16 +50,18 @@ func main() {
 
 	for {
 		msgPayload := Read(nickname + " : ")
-		msgPayload = msgPayload[:len(msgPayload)-1]
-		msgPayload = replacer.Replace(msgPayload)
+		if msgPayload != "" {
+			msgPayload = msgPayload[:len(msgPayload)-1]
+			msgPayload = replacer.Replace(msgPayload)
 
-		msg, disconnect := checkCommand(msgPayload, uid)
+			msg, disconnect := checkCommand(msgPayload, uid)
 
-		_, errWrite := conn.Write([]byte(msg))
-		check(errWrite)
+			_, errWrite := conn.Write([]byte(msg))
+			check(errWrite)
 
-		if disconnect {
-			os.Exit(0)
+			if disconnect {
+				os.Exit(0)
+			}
 		}
 	}
 }
