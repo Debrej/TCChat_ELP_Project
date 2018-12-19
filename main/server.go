@@ -31,21 +31,24 @@ func main() {
 
 			_, errWrite := conn.Write([]byte(msg))
 			check(errWrite)
+			go func(conn net.Conn) {
+				for {
+					msg, errRead := bufio.NewReader(conn).ReadString('\n')
+					check(errRead)
+					msgName, _, msgParams := ParseServer(msg)
+					users, conns, msg = ServerRecHandler(msgName, msgParams, conn, users, conns)
+
+					fmt.Print("message received : ")
+
+					fmt.Println(msg)
+
+					ServerSendHandler(msgName, msgParams, msg, users, conns)
+				}
+			}(conn)
 		}
 	}()
 
 	for {
-		for _, conn := range conns {
-			msg, errRead := bufio.NewReader(conn).ReadString('\n')
-			check(errRead)
-			msgName, _, msgParams := ParseServer(msg)
-			users, conns, msg = ServerRecHandler(msgName, msgParams, conn, users, conns)
-
-			fmt.Print("message received : ")
-
-			fmt.Println(msg)
-
-			ServerSendHandler(msgName, msgParams, msg, users, conns)
-		}
+		_ = 0
 	}
 }
