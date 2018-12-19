@@ -23,7 +23,7 @@
       "name": "TCCHAT_PERSONAL",
       "parameters": [
         "msg_payload",
-        "src_nickname",
+        "src_uid",
         "dest_nickname"
       ]
     },

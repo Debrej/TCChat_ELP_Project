@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"net"
 	"os"
 	"strconv"
@@ -41,16 +42,16 @@ func main() {
 		for {
 			msg, errRead := bufio.NewReader(conn).ReadString('\n')
 			check(errRead)
-
 			msgCName, _, msgCParams := ParseClient(msg)
 			uidI, _ := strconv.Atoi(uid)
 			ClientHandler(msgCName, msgCParams, uidI)
+			fmt.Print(nickname + " : ")
 		}
 	}()
 
 	for {
 		msgPayload := Read(nickname + " : ")
-		if msgPayload != "" {
+		if msgPayload != "\n" {
 			msgPayload = msgPayload[:len(msgPayload)-1]
 			msgPayload = replacer.Replace(msgPayload)
 

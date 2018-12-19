@@ -37,11 +37,14 @@ func main() {
 			go func(conn net.Conn) {
 				for {
 					msg, errRead := bufio.NewReader(conn).ReadString('\n')
-					check(errRead)
+					if errRead != nil {
+						_ = conn.Close()
+						break
+					}
 					msgName, _, msgParams := ParseServer(msg)
 					users, conns, msg = ServerRecHandler(msgName, msgParams, conn, users, conns)
 
-					fmt.Print("message received : ")
+					fmt.Print("message generated : ")
 
 					fmt.Println(msg)
 
