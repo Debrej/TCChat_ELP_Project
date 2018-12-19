@@ -23,13 +23,15 @@ func main() {
 	_, errWrite := conn.Write([]byte(msgNickname))
 	check(errWrite)
 
+	f, _ := os.OpenFile("output.txt", os.O_RDWR|os.O_CREATE, 0777)
+
 	go func() {
 		msg, errRead := bufio.NewReader(conn).ReadString('\n')
 		check(errRead)
 
 		msgCName, _, msgCParams := ParseClient(msg)
 		uidI, _ := strconv.Atoi(uid)
-		uid = strconv.Itoa(ClientHandler(msgCName, msgCParams, uidI))
+		uid = strconv.Itoa(ClientHandler(msgCName, msgCParams, uidI, f))
 
 		// CLIENT IS READY
 		ready <- 0
@@ -44,7 +46,7 @@ func main() {
 			check(errRead)
 			msgCName, _, msgCParams := ParseClient(msg)
 			uidI, _ := strconv.Atoi(uid)
-			ClientHandler(msgCName, msgCParams, uidI)
+			ClientHandler(msgCName, msgCParams, uidI, f)
 			fmt.Print(nickname + " : ")
 		}
 	}()

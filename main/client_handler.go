@@ -2,57 +2,58 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"strconv"
 )
 
-func ClientHandler(msgName string, msgParams map[string]string, uid int) int {
+func ClientHandler(msgName string, msgParams map[string]string, uid int, f *os.File) int {
 	switch msgName {
 	case "TCCHAT_WELCOME":
-		uid = showWelcome(msgParams)
+		uid = showWelcome(msgParams, f)
 
 	case "TCCHAT_USERIN":
-		showUserIn(msgParams)
+		showUserIn(msgParams, f)
 
 	case "TCCHAT_USEROUT":
-		showUserOut(msgParams)
+		showUserOut(msgParams, f)
 
 	case "TCCHAT_MESSAGE":
-		showMsg(msgParams)
+		showMsg(msgParams, f)
 
 	case "TCCHAT_PERSONAL":
-		showPrivateMsg(msgParams)
+		showPrivateMsg(msgParams, f)
 	}
 	return uid
 }
 
-func showWelcome(msgParams map[string]string) int {
+func showWelcome(msgParams map[string]string, f *os.File) int {
 	serverName := msgParams["server_name"]
-	fmt.Println("Welcome to " + serverName)
+	_, _ = f.Write([]byte("Welcome to " + serverName))
 	uid, _ := strconv.Atoi(msgParams["uid"])
 	return uid
 }
 
-func showUserIn(msgParams map[string]string) {
+func showUserIn(msgParams map[string]string, f *os.File) {
 	nickname := msgParams["nickname"]
-	fmt.Println("\nA new user arrives, welcome " + nickname)
+	_, _ = f.Write([]byte("\nA new user arrives, welcome " + nickname))
 }
 
-func showUserOut(msgParams map[string]string) {
+func showUserOut(msgParams map[string]string, f *os.File) {
 	nickname := msgParams["nickname"]
-	fmt.Println("\n" + nickname + " left us... :'(")
+	_, _ = f.Write([]byte("\n" + nickname + " left us... :'("))
 }
 
-func showMsg(msgParams map[string]string) {
+func showMsg(msgParams map[string]string, f *os.File) {
 	nickname := msgParams["src_nickname"]
 	msg := msgParams["msg_payload"]
-	fmt.Println("\n" + nickname + " : " + msg)
+	_, _ = f.Write([]byte("\n" + nickname + " : " + msg))
 }
 
-func showPrivateMsg(msgParams map[string]string) {
+func showPrivateMsg(msgParams map[string]string, f *os.File) {
 	srcNickname := msgParams["src_nickname"]
 	destNickname := msgParams["dest_nickname"]
 	msg := msgParams["msg_payload"]
-	fmt.Println("\n" + srcNickname + "@" + destNickname + " : " + msg)
+	_, _ = f.Write([]byte("\n" + srcNickname + "@" + destNickname + " : " + msg))
 }
 
 func checkCommand(msgPayload string, uid string) (string, bool) {
