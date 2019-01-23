@@ -17,7 +17,7 @@ func main() {
 	nickname = nickname[:len(nickname)-1]
 	msgNickname := "TCCHAT_REGISTER\t" + nickname + "\n"
 
-	conn, errDial := net.Dial("tcp", "192.168.43.10:16000")
+	conn, errDial := net.Dial("tcp", "127.0.0.1:16000")
 	check(errDial)
 	_, errWrite := conn.Write([]byte(msgNickname))
 	check(errWrite)

@@ -63,7 +63,7 @@ func serverMessageHandler(msgParams map[string]string, users map[int]string) (ma
 	if isPersonal {
 		retString = "TCCHAT_PERSONAL\t" + msg + "\t" + users[uid] + "\t" + dest + "\n"
 	} else {
-		retString = "TCCHAT_MESSAGE\t" + msg + "\t" + users[uid] + "\n"
+		retString = "TCCHAT_BCAST\t" + msg + "\t" + users[uid] + "\n"
 	}
 	return users, retString
 }
@@ -88,7 +88,7 @@ func checkPersonal(msg string) (bool, string, string) {
 
 func ServerSendHandler(msgName string, msgParams map[string]string, msg string, users map[int]string, conns map[int]net.Conn) {
 	switch msgName {
-	case "TCCHAT_MESSAGE":
+	case "TCCHAT_BCAST":
 		SendBroadcast(msg, msgParams["uid"], conns)
 
 	case "TCCHAT_WELCOME":

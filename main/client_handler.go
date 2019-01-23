@@ -17,7 +17,7 @@ func ClientHandler(msgName string, msgParams map[string]string, uid int, f *os.F
 	case "TCCHAT_USEROUT":
 		showUserOut(msgParams, f)
 
-	case "TCCHAT_MESSAGE":
+	case "TCCHAT_BCAST":
 		showMsg(msgParams, f)
 
 	case "TCCHAT_PERSONAL":
@@ -28,7 +28,7 @@ func ClientHandler(msgName string, msgParams map[string]string, uid int, f *os.F
 
 func showWelcome(msgParams map[string]string, f *os.File) int {
 	serverName := msgParams["server_name"]
-	_, _ = f.Write([]byte("Welcome to " + serverName))
+	_, _ = f.Write([]byte("Welcome to " + serverName + "\r\n"))
 	uid, _ := strconv.Atoi(msgParams["uid"])
 	return uid
 }
@@ -67,7 +67,7 @@ func checkCommand(msgPayload string, uid string) (string, bool) {
 			disconnect = true
 		}
 	} else {
-		msg = "TCCHAT_MESSAGE\t" + msgPayload + "\t" + uid + "\n"
+		msg = "TCCHAT_BCAST\t" + msgPayload + "\t" + uid + "\n"
 	}
 
 	return msg, disconnect

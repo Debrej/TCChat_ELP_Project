@@ -28,7 +28,7 @@
       ]
     },
     {
-      "name": "TCCHAT_MESSAGE",
+      "name": "TCCHAT_BCAST",
       "parameters": [
         "msg_payload",
         "src_nickname"
